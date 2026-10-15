@@ -22,6 +22,9 @@ namespace MSO
         private int direction_x;
         private int direction_y;
 
+        private enum Facing { right, down, left, up }
+        Facing facing = Facing.right;
+
         public Player() 
         {
             pos_x = 0;
@@ -46,6 +49,7 @@ namespace MSO
 
                 direction_x = newX;
                 direction_y = newY;
+                facing = (Facing)(((int)facing + 3) % 4);
             }
 
             if (direction == "right")
@@ -55,6 +59,7 @@ namespace MSO
 
                 direction_x = newX;
                 direction_y = newY;
+                facing = (Facing)(((int)facing + 1) % 4);
             }
         }
 
@@ -65,7 +70,8 @@ namespace MSO
 
         public string DirectionToString() 
         {
-            return "(" + direction_x.ToString() + ", " + direction_y.ToString() + ")";
+            return facing.ToString();
+            //return "(" + direction_x.ToString() + ", " + direction_y.ToString() + ")";
         }
     }
 }

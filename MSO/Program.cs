@@ -71,8 +71,23 @@ class Program
         FileStrategy a = FileFactory.ReturnFileStrategy(path);
 
         EntityManager entities = new EntityManager();
-        
+
         ICommand command = a.Import();
         command.Run(entities);
     }
+}
+
+public class Metrics
+{
+    public int totalRepeats;
+    public int totalCommands;
+    public int maxNesting;
+
+    public static string getMode()
+    {
+        Console.WriteLine("Do you want to execute the program (type e) or calculate all metrics (type m)");
+        string mode = Console.ReadLine();
+        return mode;
+    }
+
 }
