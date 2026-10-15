@@ -18,9 +18,9 @@ namespace MSO
 
         public void Run(EntityManager entities) 
         { 
-            Console.WriteLine("Player went from " + entities.Player.PositionToString());
+            Printer.PrintLine("Player went from " + entities.Player.PositionToString());
             entities.Player.MoveSteps(steps);
-            Console.WriteLine("to " + entities.Player.PositionToString());
+            Printer.PrintLine("to " + entities.Player.PositionToString());
         }
     }
     internal class TurnCommand : ICommand
@@ -33,9 +33,9 @@ namespace MSO
 
         public void Run(EntityManager entities)
         {
-            Console.WriteLine("Player faced from " + entities.Player.DirectionToString());
+            Printer.PrintLine("Player faced from " + entities.Player.DirectionToString());
             entities.Player.TurnDirection(turnDirection);
-            Console.WriteLine("to " + entities.Player.DirectionToString());
+            Printer.PrintLine("to " + entities.Player.DirectionToString());
         }
     }
 
@@ -51,7 +51,7 @@ namespace MSO
 
         public void Run(EntityManager entities) 
         {
-            Console.WriteLine("COMPOSITE: " + repeatAmount + " TIMES");
+            Printer.PrintLine("COMPOSITE: " + repeatAmount + " TIMES");
             for (int i = 0; i < repeatAmount; i++) 
             {
                 foreach (ICommand command in commands) { command.Run(entities); }
