@@ -1,3 +1,8 @@
-Repeat 4 times
- Move 10
- Turn right
+Move 10
+Turn right
+Move 10
+Turn right
+Move 10
+Turn right
+Move 10
+Turn right
