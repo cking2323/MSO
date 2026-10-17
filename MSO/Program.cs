@@ -1,5 +1,6 @@
 ﻿using MSO;
 using System.Collections.Generic;
+using System.Reflection;
 
 abstract class FileStrategy
 {
@@ -66,28 +67,33 @@ class Program
 {
     static void Main()
     {
-        string path = @"C:\Users\kelvi\source\repos\MSO\MSO\file1.txt";
-        
+        Run();
+    }
+    private static void Run()
+    {
+        string path = UI.ChoosePath();
+
         FileStrategy a = FileFactory.ReturnFileStrategy(path);
 
+        string mode = UI.GetMode();
+
         EntityManager entities = new EntityManager();
-
         ICommand command = a.Import();
-        command.Run(entities);
+
+        if (mode == "m")
+        {
+            MetricsResult metrics = MetricsAnalyzer.Analyze(command);
+
+            UI.PrintLine("total commands: " + metrics.TotalCommands);
+            UI.PrintLine("total repeats: " + metrics.TotalRepeats);
+            UI.PrintLine("max nesting: " + metrics.MaxNesting);
+            // get metrics and print them out
+        }
+        else if (mode == "e")
+        {
+            command.Run(entities);
+        }
+        else { UI.PrintLine("please enter m or e"); }
+        Run();
     }
-}
-
-public class Metrics
-{
-    public int totalRepeats;
-    public int totalCommands;
-    public int maxNesting;
-
-    public static string getMode()
-    {
-        Console.WriteLine("Do you want to execute the program (type e) or calculate all metrics (type m)");
-        string mode = Console.ReadLine();
-        return mode;
-    }
-
 }
