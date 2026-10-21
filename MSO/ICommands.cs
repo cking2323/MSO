@@ -18,9 +18,9 @@ namespace MSO
 
         public void Run(EntityManager entities) 
         { 
-            UI.PrintLine("Player went from " + entities.Player.PositionToString());
+            UI.Print("Player went from " + entities.Player.PositionToString());
             entities.Player.MoveSteps(steps);
-            UI.PrintLine("to " + entities.Player.PositionToString());
+            UI.PrintLine(" to " + entities.Player.PositionToString());
         }
     }
     internal class TurnCommand : ICommand
@@ -33,9 +33,9 @@ namespace MSO
 
         public void Run(EntityManager entities)
         {
-            UI.PrintLine("Player faced from " + entities.Player.DirectionToString());
+            UI.Print("Player faced from " + entities.Player.DirectionToString());
             entities.Player.TurnDirection(turnDirection);
-            UI.PrintLine("to " + entities.Player.DirectionToString());
+            UI.PrintLine(" to " + entities.Player.DirectionToString());
         }
     }
 

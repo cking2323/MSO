@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Reflection;
 
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("MSO.Tests")]
+
 class Program
 {
     static void Main()
