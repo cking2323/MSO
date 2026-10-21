@@ -24,7 +24,13 @@ namespace MSO
             }
             UI.PrintLine($"{PredefinedExamples.Count + 1}. Import from text file");
 
-            int choice = Int32.Parse(Console.ReadLine());
+            int choice = 0;
+            try { choice = Int32.Parse(Console.ReadLine()); }
+            catch(Exception e) { 
+                UI.PrintLine("The input string was not in a correct format"); 
+                ChoosePath();
+            }
+
             if (choice <= PredefinedExamples.Count && PredefinedExamples.Count > 0)
             {
                 return PredefinedExamples[choice - 1].Path;
