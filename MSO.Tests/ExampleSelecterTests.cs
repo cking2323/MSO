@@ -2,7 +2,7 @@
 
 namespace MSO.Tests
 {
-    public class ExampleSelectorTests : IDisposable
+    public class ExampleSelectorTests 
     {
         private readonly TextWriter originalOut = Console.Out;
         private readonly TextReader originalIn = Console.In;
@@ -13,12 +13,7 @@ namespace MSO.Tests
             Console.SetOut(new StringWriter());
         }
 
-        public void Dispose()
-        {
-            // Restore original console state after each test
-            Console.SetOut(originalOut);
-            Console.SetIn(originalIn);
-        }
+
 
         [Fact]
         public void ChooseExamplePathTest()
