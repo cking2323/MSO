@@ -8,11 +8,12 @@ namespace MSO
 {
     public class ExampleSelector
     {
+        private static readonly string BaseDirectory = AppDomain.CurrentDomain.BaseDirectory;
         private static readonly List<(string Name, string Path)> PredefinedExamples = new List<(string, string)>
         {
-            ("Basic Example", @"C:\Users\laptop\Documents\GitHub\MSO\MSO\examples\basic.txt"),
-            ("Advanced Example", @"C:\Users\laptop\Documents\GitHub\MSO\MSO\examples\advanced.txt"),
-            ("Expert Example", @"C:\Users\laptop\Documents\GitHub\MSO\MSO\examples\expert.txt")
+            ("Basic Example", Path.Combine(BaseDirectory,@"..\..\..\examples\basic.txt")),
+            ("Advanced Example", Path.Combine(BaseDirectory,@"..\..\..\examples\advanced.txt")),
+            ("Expert Example", Path.Combine(BaseDirectory, @"..\..\..\examples\expert.txt"))
         };
         public static string ChoosePath()
         {
