@@ -42,8 +42,6 @@ namespace MSO
             ClearButtons();
             // ICommand visitor
             this.bcv = new ButtonCreationVisitor(this, AddEventhandlers, new Point(0, 0), 30, 30);
-            //bcv.CreateButtons(commands);
-
             bcv.CreateButtons(commands);
         }
 

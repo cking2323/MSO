@@ -11,6 +11,7 @@ namespace MSO
         public void Run(EntityManager entities, TextBox tb);
 
         abstract void Accept(Visitor v);
+
     }
 
     internal class MoveCommand : ICommand 
@@ -29,6 +30,11 @@ namespace MSO
             entities.Player.MoveSteps(steps);
             UI.PrintLine(" to " + entities.Player.PositionToString(), tb);
         }
+
+        public override string ToString()
+        {
+            return "Move " + steps.ToString();
+        }
     }
     internal class TurnCommand : ICommand
     {
@@ -46,6 +52,10 @@ namespace MSO
             UI.Print("Player faced from " + entities.Player.DirectionToString(), tb);
             entities.Player.TurnDirection(turnDirection);
             UI.PrintLine(" to " + entities.Player.DirectionToString(), tb);
+        }
+        public override string ToString()
+        {
+            return "Turn " + turnDirection;
         }
     }
 
@@ -72,6 +82,10 @@ namespace MSO
             {
                 foreach (ICommand command in commands) { command.Run(entities, tb); }
             }
+        }
+        public override string ToString()
+        {
+            return "Repeat " + repeatAmount.ToString();
         }
     }
 }
