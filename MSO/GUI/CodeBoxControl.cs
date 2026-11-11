@@ -26,7 +26,7 @@ namespace MSO
         internal CodeBoxControl(ICommand commands)
         {
             //codeBox = new CodeBox();
-            this.Size = new Size(300, 500);
+            this.Size = new Size(350, 450);
             this.BackColor = Color.White;
             this.BorderStyle = BorderStyle.FixedSingle;
 
