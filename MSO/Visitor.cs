@@ -36,14 +36,27 @@ namespace MSO
         }
 
 
-        public void CreateButtons(List<ICommand> commands)
+  
+        public void CreateButtons(ICommand commands)
         {
-            foreach(ICommand command in commands)
+            if (commands is CompositeCommand composite)
+            {
+                composite.Accept(this);
+                CreateButtonList(composite.GetCommands());
+            }
+            else 
+            {
+                return;
+            }
+        }
+
+        public void CreateButtonList(List<ICommand> commands)
+        {
+            foreach (ICommand command in commands)
             {
                 command.Accept(this);
             }
         }
-
 
         public void Visit(MoveCommand mc)
         {
@@ -59,7 +72,7 @@ namespace MSO
         {
             CodeBox.CreateButton(cc, point, control, action);
             point = PointMutation.CompositeCommand(point, buttonHeight, indent);
-            CreateButtons(cc.GetCommands());
+            CreateButtonList(cc.GetCommands());
             point = PointMutation.Revert(point, buttonHeight, indent);
 
         }
@@ -80,7 +93,7 @@ namespace MSO
         }
         public static Point Revert(Point p, int height, int indent)
         {
-            return new Point(p.X - indent, p.Y + height);
+            return new Point(p.X - indent, p.Y);
         }
 
     }
@@ -89,37 +102,3 @@ namespace MSO
 
 
 
-
-
-
-
-
-//class ButtonVisitor : Visitor
-//{
-//    private int x_pos;
-//    private int y_pos;
-//    extern void Function();
-
-//    public ButtonVisitor
-//    public void Visit(MoveCommand mc)
-//    {
-
-
-
-//    }
-//    public void Visit(TurnCommand tc)
-//    {
-
-
-
-//    }
-//    public void Visit(CompositeCommand cc)
-//    {
-
-
-
-//    }
-
-
-
-//}

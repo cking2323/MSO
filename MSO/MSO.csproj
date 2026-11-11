@@ -9,7 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MSTest.TestFramework" Version="4.5.1" />
+	  <!--<PackageReference Include="MSTest.TestFramework" Version="4.5.1" />-->
+	<Compile Remove="MSO.tests\**\*.cs" /> 
   </ItemGroup>
 
 </Project>

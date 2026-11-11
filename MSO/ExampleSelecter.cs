@@ -15,6 +15,27 @@ namespace MSO
             ("Advanced Example", Path.Combine(BaseDirectory,@"..\..\..\examples\advanced.txt")),
             ("Expert Example", Path.Combine(BaseDirectory, @"..\..\..\examples\expert.txt"))
         };
+
+        public static string ChoosePath(string mode)
+        {
+            mode = mode.ToLower();
+            if (mode == "basic")
+            {
+                return PredefinedExamples[0].Path;
+            }
+            if (mode == "advanced")
+            {
+                return PredefinedExamples[1].Path;
+            }
+            if (mode == "expert")
+            {
+                return PredefinedExamples[2].Path;
+            }
+            else
+            {
+                throw new InvalidOperationException("input not correct, choose: basic, advanced or expert");
+            }
+        }
         public static string ChoosePath()
         {
             UI.PrintLine($"Select a program");

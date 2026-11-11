@@ -6,26 +6,28 @@ using System.Threading.Tasks;
 
 namespace MSO.GUI
 {
-    internal class GUI_Form : Form
+    internal interface ICommandLoadTarget
+    {
+        void LoadCommands(ICommand command);
+    }
+
+    internal class GUI_Form : Form, ICommandLoadTarget
     {
         
         GridControl gritControl;
         CodeBoxControl codeBoxControl;
         Panel panel;
         char[][] route;
-        List<string> commands = new List<string>();
+
+
+        EntityManager entities;
+        ICommand commands;
         ICommand selectedCommand;
 
         public GUI_Form()
         {
-            string path = ExampleSelector.ChoosePath();
 
-            FileStrategy a = FileFactory.ReturnFileStrategy(path);
-
-            string mode = UI.GetMode();
-
-            EntityManager entities = new EntityManager();
-            ICommand command = a.Import();
+            entities = new EntityManager();
 
 
             panel = new Panel();
@@ -48,6 +50,30 @@ namespace MSO.GUI
             codeBoxControl.Location = new Point(100, 50);
             this.Controls.Add(codeBoxControl);
 
+            LoadProgramMenu.SelectFileButtons(this, this);
+
         }
+
+        public void LoadCommands(ICommand command)
+        {
+            this.commands = command;
+            codeBoxControl.RenderButtons(commands);
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
+
+
 }
