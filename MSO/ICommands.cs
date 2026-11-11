@@ -9,12 +9,19 @@ namespace MSO
     internal interface ICommand
     {
         public void Run(EntityManager entities);
+
+        abstract void Accept(Visitor v);
     }
 
     internal class MoveCommand : ICommand 
     {
         private int steps;
         public MoveCommand(int _steps) { this.steps = _steps;}
+
+        public void Accept(Visitor v)
+        {
+            v.Visit(this);
+        }
 
         public void Run(EntityManager entities) 
         { 
@@ -30,7 +37,10 @@ namespace MSO
         {
             this.turnDirection = _turnDirection;
         }
-
+        public void Accept(Visitor v)
+        {
+            v.Visit(this);
+        }
         public void Run(EntityManager entities)
         {
             UI.Print("Player faced from " + entities.Player.DirectionToString());
@@ -51,6 +61,10 @@ namespace MSO
 
         public List<ICommand> GetCommands() { return commands; }
 
+        public void Accept(Visitor v)
+        {
+            v.Visit(this);
+        }
         public void Run(EntityManager entities) 
         {
             UI.PrintLine("COMPOSITE: " + repeatAmount + " TIMES");
