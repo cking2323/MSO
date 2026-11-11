@@ -7,13 +7,12 @@ using MSO.GUI;
 
 class Program
 {
+    [STAThread]
     static void Main()
     {
         Run();
     }
 
-
-    [STAThread]
     static void Run()
     {
         Application.EnableVisualStyles();

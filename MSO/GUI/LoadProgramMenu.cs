@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,13 +20,13 @@ namespace MSO.GUI
             ToolStripMenuItem expert = new ToolStripMenuItem();
             ToolStripMenuItem chooseFile = new ToolStripMenuItem();
 
-
             programButton.Text = "load program";
             programButton.Size = new Size(40, 30);
 
             basic.Text = "Basic";
             advanced.Text = "Advanced";
             expert.Text = "Expert";
+            chooseFile.Text = "Open file";
 
             programButton.DropDownItems.Add(basic);
             programButton.DropDownItems.Add(advanced);
@@ -84,25 +85,30 @@ namespace MSO.GUI
             {
                 try
                 {
+                    programButton.HideDropDown();
+
                     string fileName = null;
                     OpenFileDialog openFileD = new OpenFileDialog();
                     openFileD.DefaultExt = "txt";
                     openFileD.Title = "Code file...";
                     openFileD.Filter = "text file(*.txt)|*.txt";
+
+                    openFileD.CheckFileExists = true;
+                    openFileD.CheckPathExists = true;
+                    openFileD.RestoreDirectory = true;
+
                     if (openFileD.ShowDialog() == DialogResult.OK)
                     {
                         fileName = openFileD.FileName;
+                        FileStrategy a = FileFactory.ReturnFileStrategy(fileName);
+                        ICommand commands = a.Import();
+                        target.LoadCommands(commands);
                     }
 
-                    FileStrategy a = FileFactory.ReturnFileStrategy(fileName);
 
-                    ICommand commands = a.Import();
-                    target.LoadCommands(commands);
                 }
-                catch
-
-                (Exception e)
-                { MessageBox.Show("Something went wrong", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
+                catch (Exception ex)
+                { MessageBox.Show($"Something went wrong\n{ex.Message}.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
 
             }
         }
