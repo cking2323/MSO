@@ -8,7 +8,7 @@ namespace MSO
 {
     internal interface ICommand
     {
-        public void Run(EntityManager entities);
+        public void Run(EntityManager entities, TextBox tb);
 
         abstract void Accept(Visitor v);
     }
@@ -23,11 +23,11 @@ namespace MSO
             v.Visit(this);
         }
 
-        public void Run(EntityManager entities) 
+        public void Run(EntityManager entities, TextBox tb) 
         { 
-            UI.Print("Player went from " + entities.Player.PositionToString());
+            UI.Print("Player went from " + entities.Player.PositionToString(), tb);
             entities.Player.MoveSteps(steps);
-            UI.PrintLine(" to " + entities.Player.PositionToString());
+            UI.PrintLine(" to " + entities.Player.PositionToString(), tb);
         }
     }
     internal class TurnCommand : ICommand
@@ -41,11 +41,11 @@ namespace MSO
         {
             v.Visit(this);
         }
-        public void Run(EntityManager entities)
+        public void Run(EntityManager entities, TextBox tb)
         {
-            UI.Print("Player faced from " + entities.Player.DirectionToString());
+            UI.Print("Player faced from " + entities.Player.DirectionToString(), tb);
             entities.Player.TurnDirection(turnDirection);
-            UI.PrintLine(" to " + entities.Player.DirectionToString());
+            UI.PrintLine(" to " + entities.Player.DirectionToString(), tb);
         }
     }
 
@@ -65,12 +65,12 @@ namespace MSO
         {
             v.Visit(this);
         }
-        public void Run(EntityManager entities) 
+        public void Run(EntityManager entities, TextBox tb) 
         {
-            UI.PrintLine("COMPOSITE: " + repeatAmount + " TIMES");
+            UI.PrintLine("COMPOSITE: " + repeatAmount + " TIMES", tb);
             for (int i = 0; i < repeatAmount; i++) 
             {
-                foreach (ICommand command in commands) { command.Run(entities); }
+                foreach (ICommand command in commands) { command.Run(entities, tb); }
             }
         }
     }

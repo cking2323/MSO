@@ -36,39 +36,42 @@ namespace MSO
                 throw new InvalidOperationException("input not correct, choose: basic, advanced or expert");
             }
         }
-        public static string ChoosePath()
-        {
-            UI.PrintLine($"Select a program");
-            for (int i = 0; i < PredefinedExamples.Count; i++)
-            {
-                UI.PrintLine($"{i + 1}. {PredefinedExamples[i].Name}");
-            }
-            UI.PrintLine($"{PredefinedExamples.Count + 1}. Import from text file");
+        //public static string ChoosePath()
+        //{
+        //    UI.PrintLine($"Select a program");
+        //    for (int i = 0; i < PredefinedExamples.Count; i++)
+        //    {
+        //        UI.PrintLine($"{i + 1}. {PredefinedExamples[i].Name}");
+        //    }
+        //    UI.PrintLine($"{PredefinedExamples.Count + 1}. Import from text file");
 
-            int choice = 0;
-            try { choice = Int32.Parse(Console.ReadLine()); }
-            catch(Exception e) { 
-                UI.PrintLine("The input string was not in a correct format"); 
-                ChoosePath();
-            }
+        //    int choice = 0;
+        //    try { choice = Int32.Parse(Console.ReadLine()); }
+        //    catch(Exception e) { 
+        //        UI.PrintLine("The input string was not in a correct format"); 
+        //        ChoosePath();
+        //    }
 
-            if (choice <= PredefinedExamples.Count && PredefinedExamples.Count > 0)
-            {
-                return PredefinedExamples[choice - 1].Path;
-            }
-            if (choice == PredefinedExamples.Count + 1)
-            {
-                UI.PrintLine("Enter the full path of the program");
-                string path = Console.ReadLine();
-                return path;
-            }
-            else
-            {
-                UI.PrintLine($"Choose a path between from 1-{PredefinedExamples.Count + 1}");
-                ChoosePath();
-            }
-            return "no path L bozo";
-        }
+        //    if (choice <= PredefinedExamples.Count && PredefinedExamples.Count > 0)
+        //    {
+        //        return PredefinedExamples[choice - 1].Path;
+        //    }
+        //    if (choice == PredefinedExamples.Count + 1)
+        //    {
+        //        UI.PrintLine("Enter the full path of the program");
+        //        string path = Console.ReadLine();
+        //        return path;
+        //    }
+        //    else
+        //    {
+        //        UI.PrintLine($"Choose a path between from 1-{PredefinedExamples.Count + 1}");
+        //        ChoosePath();
+        //    }
+        //    return "no path L bozo";
+        //}
+
+
+
     }
 }
 
