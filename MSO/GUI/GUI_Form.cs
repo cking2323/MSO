@@ -20,16 +20,11 @@ namespace MSO.GUI
         Panel panel;
         char[][] route;
 
-
-        EntityManager entities;
         ICommand commands;
         ICommand selectedCommand;
 
         public GUI_Form()
         {
-
-            entities = new EntityManager();
-
             panel = new Panel();
             this.BackColor = Color.LightGray;
             this.ClientSize = new Size(1000, 700);
@@ -73,7 +68,8 @@ namespace MSO.GUI
         {
             if (commands != null)
             {
-                outputControl.RunEvent(commands, entities);
+                EntityManager entity = new EntityManager();
+                outputControl.RunEvent(commands, entity);
             }
             else { return; }
 
