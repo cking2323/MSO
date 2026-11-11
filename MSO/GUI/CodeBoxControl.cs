@@ -29,8 +29,7 @@ namespace MSO
             this.Size = new Size(350, 450);
             this.BackColor = Color.White;
             this.BorderStyle = BorderStyle.FixedSingle;
-
-
+            this.AutoScroll = true;
         }
 
         internal void ClearButtons()
@@ -69,6 +68,7 @@ namespace MSO
         {
             Button clickedButton = sender as Button;
             currentButton = clickedButton;
+
             if (currentButton != null)
             {
                 currentButton.BringToFront();
