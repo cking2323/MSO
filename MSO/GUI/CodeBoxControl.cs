@@ -113,8 +113,6 @@ namespace MSO
 
 
 
-
-
     //Creeert alle command buttons in het codeer vak
     public static class CodeBox 
     {
@@ -122,23 +120,27 @@ namespace MSO
         {
             Button but = new Button();
             but.Size = new Size(200, 30);
-            
+
             switch (command) //kleur op basis van command type
             {
                 case CompositeCommand:
-                    but.BackColor = Color.Green;
+                    but.BackColor = Color.FromArgb(150, 250, 125, 0);
                     break;
                 case MoveCommand:
-                    but.BackColor = Color.Red;
+                    but.BackColor = Color.FromArgb(200, 30, 141, 252);
                     break;
                 case TurnCommand:
-                    but.BackColor = Color.Blue;
+                    but.BackColor = Color.FromArgb(200, 47, 161, 109);
                     break;
 
             }
 
+            but.FlatStyle = FlatStyle.Flat;
+            but.Font = new Font("verdana", 12f, FontStyle.Bold);
+            but.ForeColor = Color.White;
             but.Text = command.ToString();
             but.Location = p;
+
             con.Controls.Add(but);
             AddEventHandlers(but);
         }

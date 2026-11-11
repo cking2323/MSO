@@ -41,7 +41,7 @@ namespace MSO.GUI
             textBox.Size = new Size(350, 140);
             textBox.BackColor = Color.Lavender;
             textBox.Multiline = true;
-            textBox.PlaceholderText = "output..";
+            textBox.PlaceholderText = "<output>";
             textBox.ReadOnly = true;
 
 

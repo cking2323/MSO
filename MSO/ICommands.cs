@@ -63,7 +63,7 @@ namespace MSO
     {
         private List<ICommand> commands;
 
-        private int repeatAmount;
+        public int repeatAmount;
 
         public CompositeCommand(int repeat_amount) { commands = new List<ICommand>(); this.repeatAmount = repeat_amount; }
 

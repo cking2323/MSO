@@ -35,19 +35,13 @@ namespace MSO
             this.indent = indent;
         }
 
-
-  
-        public void CreateButtons(ICommand commands)
+        public void CreateButtons(ICommand commands) // filter the first composite commands that holds the entire program
         {
             if (commands is CompositeCommand composite)
             {
-                composite.Accept(this);
                 CreateButtonList(composite.GetCommands());
             }
-            else 
-            {
-                return;
-            }
+            else { return; }
         }
 
         public void CreateButtonList(List<ICommand> commands)
@@ -70,11 +64,30 @@ namespace MSO
         }
         public void Visit(CompositeCommand cc)
         {
-            CodeBox.CreateButton(cc, point, control, action);
-            point = PointMutation.CompositeCommand(point, buttonHeight, indent);
-            CreateButtonList(cc.GetCommands());
-            point = PointMutation.Revert(point, buttonHeight, indent);
+            if (cc.repeatAmount > 1)
+            {
+                CodeBox.CreateButton(cc, point, control, action);
+                point = PointMutation.CompositeCommand(point, buttonHeight, indent);
 
+                int i = cc.repeatAmount;
+                for (int j = i; j > 0; j--)
+                {
+                    CreateButtonList(cc.GetCommands());
+                }
+                point = PointMutation.Revert(point, buttonHeight, indent);
+            }
+            else if (cc.repeatAmount == 1)
+            {
+                CodeBox.CreateButton(cc, point, control, action);
+                point = PointMutation.CompositeCommand(point, buttonHeight, indent);
+                CreateButtonList(cc.GetCommands());
+                point = PointMutation.Revert(point, buttonHeight, indent);
+            }
+            else if (cc.repeatAmount == 0)
+            {
+                CodeBox.CreateButton(cc, point, control, action);
+            }
+            else { return; }
         }
 
 
