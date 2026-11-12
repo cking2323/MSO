@@ -27,14 +27,17 @@ namespace MSO.GUI
             this.indent = indent;
         }
 
+
         public void CreateButtons(ICommand commands) // filter the first composite commands that holds the entire program
         {
             if (commands is CompositeCommand composite)
             {
                 CreateButtonList(composite.GetCommands());
             }
+
             else { return; }
         }
+
 
         public void CreateButtonList(List<ICommand> commands)
         {
