@@ -64,30 +64,12 @@ namespace MSO
         }
         public void Visit(CompositeCommand cc)
         {
-            if (cc.repeatAmount > 1)
-            {
-                CodeBox.CreateButton(cc, point, control, action);
-                point = PointMutation.CompositeCommand(point, buttonHeight, indent);
 
-                int i = cc.repeatAmount;
-                for (int j = i; j > 0; j--)
-                {
-                    CreateButtonList(cc.GetCommands());
-                }
-                point = PointMutation.Revert(point, buttonHeight, indent);
-            }
-            else if (cc.repeatAmount == 1)
-            {
-                CodeBox.CreateButton(cc, point, control, action);
-                point = PointMutation.CompositeCommand(point, buttonHeight, indent);
-                CreateButtonList(cc.GetCommands());
-                point = PointMutation.Revert(point, buttonHeight, indent);
-            }
-            else if (cc.repeatAmount == 0)
-            {
-                CodeBox.CreateButton(cc, point, control, action);
-            }
-            else { return; }
+            CodeBox.CreateButton(cc, point, control, action);
+            point = PointMutation.CompositeCommand(point, buttonHeight, indent);
+            CreateButtonList(cc.GetCommands());
+            point = PointMutation.Revert(point, buttonHeight, indent);
+
         }
 
 
