@@ -9,8 +9,10 @@ namespace MSO
     internal class EntityManager
     {
         public Player Player { get; private set; }
+        public Grid Grid { get; private set; }
         public EntityManager() 
         {
+            Grid = new Grid(5, 5);
             Player = new Player();
         }
     }
