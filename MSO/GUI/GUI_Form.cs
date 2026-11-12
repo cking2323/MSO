@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ICommand = MSO.ICommand;
 
 namespace MSO.GUI
 {
@@ -17,17 +18,21 @@ namespace MSO.GUI
         GridControl gridControl;
         CodeBoxControl codeBoxControl;
         OutputControl outputControl;
-        Panel panel;
+        EditCommandPanel acp;
         char[][] route;
 
         ICommand command;
-        FacadeGUI FacadeGUI;
+        FacadeGUI facadeGUI;
 
         public GUI_Form()
         {
-            FacadeGUI = new FacadeGUI();
+            facadeGUI = new FacadeGUI();
 
-            panel = new Panel();
+            this.acp = new EditCommandPanel(this, facadeGUI);
+            this.acp.Location = new Point(5, 50);
+            this.acp.Size = new Size(200, 600);
+            this.Controls.Add(acp);
+
             this.BackColor = Color.LightGray;
             this.ClientSize = new Size(1000, 700);
             this.route = new char[][] {
@@ -44,14 +49,13 @@ namespace MSO.GUI
             gridControl.Location = new Point(650, 50);
             this.Controls.Add(gridControl);
 
-            codeBoxControl = new CodeBoxControl(command);
-            codeBoxControl.Location = new Point(200, 50);
+            codeBoxControl = new CodeBoxControl(facadeGUI);
+            codeBoxControl.Location = new Point(210, 50);
             this.Controls.Add(codeBoxControl);
 
             // Sets outputControl below codeBoxControl
-            outputControl = new OutputControl(FacadeGUI);
+            outputControl = new OutputControl(facadeGUI);
             outputControl.Location = new Point(codeBoxControl.Location.X, codeBoxControl.Bottom + 5);
-           // outputControl.Location = new Point(codeBoxControl.Location.X, codeBoxControl.Location.Y + codeBoxControl.Height + 20);
             outputControl.Height = this.Height - codeBoxControl.Height - 20;
             outputControl.Width = codeBoxControl.Width;
             this.Controls.Add(outputControl);
@@ -65,34 +69,22 @@ namespace MSO.GUI
         // Run the program or run Metrics
         private void RunProgram(object sender, EventArgs ea)
         {
-            string result = FacadeGUI.RunCommands();
+            string result = facadeGUI.RunCommands();
             outputControl.SetText(result);
         }
 
         private void MetricsProgram(object sender, EventArgs ea)
         {
-            string result = FacadeGUI.RunMetrics();
+            string result = facadeGUI.RunMetrics();
             outputControl.SetText(result);
         }
 
 
         public void LoadCommands(string path)
         {
-            FacadeGUI.LoadCommandFromPath(path);
-            codeBoxControl.RenderButtons(FacadeGUI.StartCommand);
+            facadeGUI.LoadCommandFromPath(path);
+            codeBoxControl.RenderButtons(facadeGUI.StartCommand);
         }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     }
