@@ -23,10 +23,14 @@ class TextFileStrategy : FileStrategy
 
         foreach (string line in File.ReadLines(this.path))
         {
+            if (string.IsNullOrWhiteSpace(line)) continue;
+
             currentNesting = line.Length - line.TrimStart('\t').Length;
 
-            for (int i = 0; i < nestedComposites.Count - (currentNesting + 1); i++)
+            while (nestedComposites.Count > currentNesting + 1)
+            {
                 nestedComposites.RemoveAt(nestedComposites.Count - 1);
+            }
 
             string[] args = line.TrimStart('\t').Split(" ");
 
