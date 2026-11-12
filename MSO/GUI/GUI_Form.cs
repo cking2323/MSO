@@ -8,7 +8,7 @@ namespace MSO.GUI
 {
     internal interface ICommandLoadTarget
     {
-        void LoadCommands(ICommand command);
+        void LoadCommands(string path);
     }
 
     internal class GUI_Form : Form, ICommandLoadTarget
@@ -20,11 +20,13 @@ namespace MSO.GUI
         Panel panel;
         char[][] route;
 
-        ICommand commands;
-        ICommand selectedCommand;
+        ICommand command;
+        FacadeGUI FacadeGUI;
 
         public GUI_Form()
         {
+            FacadeGUI = new FacadeGUI();
+
             panel = new Panel();
             this.BackColor = Color.LightGray;
             this.ClientSize = new Size(1000, 700);
@@ -42,12 +44,12 @@ namespace MSO.GUI
             gridControl.Location = new Point(650, 50);
             this.Controls.Add(gridControl);
 
-            codeBoxControl = new CodeBoxControl(commands);
+            codeBoxControl = new CodeBoxControl(command);
             codeBoxControl.Location = new Point(200, 50);
             this.Controls.Add(codeBoxControl);
 
             // Sets outputControl below codeBoxControl
-            outputControl = new OutputControl();
+            outputControl = new OutputControl(FacadeGUI);
             outputControl.Location = new Point(codeBoxControl.Location.X, codeBoxControl.Bottom + 5);
            // outputControl.Location = new Point(codeBoxControl.Location.X, codeBoxControl.Location.Y + codeBoxControl.Height + 20);
             outputControl.Height = this.Height - codeBoxControl.Height - 20;
@@ -58,37 +60,26 @@ namespace MSO.GUI
             Button metricsButton = outputControl.flowLayoutPanel.Controls["met"] as Button;
             runButton.Click += RunProgram;
             metricsButton.Click += MetricsProgram;
-
-
-
         }
 
         // Run the program or run Metrics
         private void RunProgram(object sender, EventArgs ea)
         {
-            if (commands != null)
-            {
-                EntityManager entity = new EntityManager();
-                outputControl.RunEvent(commands, entity);
-            }
-            else { return; }
-
+            string result = FacadeGUI.RunCommands();
+            outputControl.SetText(result);
         }
 
         private void MetricsProgram(object sender, EventArgs ea)
         {
-            if (commands != null)
-            {
-                outputControl.MetricsEvent(commands);
-            }
-            else { return; }
+            string result = FacadeGUI.RunMetrics();
+            outputControl.SetText(result);
         }
 
 
-        public void LoadCommands(ICommand command)
+        public void LoadCommands(string path)
         {
-            this.commands = command;
-            codeBoxControl.RenderButtons(commands);
+            FacadeGUI.LoadCommandFromPath(path);
+            codeBoxControl.RenderButtons(FacadeGUI.StartCommand);
         }
 
 

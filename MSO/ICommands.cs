@@ -8,10 +8,7 @@ namespace MSO
 {
     internal interface ICommand
     {
-        public void Run(EntityManager entities, TextBox tb);
-
-        abstract void Accept(Visitor v);
-
+        public void Run(EntityManager entities);
     }
 
     internal class MoveCommand : ICommand 
@@ -19,18 +16,10 @@ namespace MSO
         private int steps;
         public MoveCommand(int _steps) { this.steps = _steps;}
 
-        public void Accept(Visitor v)
-        {
-            v.Visit(this);
-        }
-
-        public void Run(EntityManager entities, TextBox tb) 
+        public void Run(EntityManager entities) 
         { 
-            UI.Print("Player went from " + entities.Player.PositionToString(), tb);
             entities.Player.MoveSteps(steps);
-            UI.PrintLine(" to " + entities.Player.PositionToString(), tb);
         }
-
         public override string ToString()
         {
             return "Move " + steps.ToString();
@@ -43,15 +32,9 @@ namespace MSO
         {
             this.turnDirection = _turnDirection;
         }
-        public void Accept(Visitor v)
+        public void Run(EntityManager entities)
         {
-            v.Visit(this);
-        }
-        public void Run(EntityManager entities, TextBox tb)
-        {
-            UI.Print("Player faced from " + entities.Player.DirectionToString(), tb);
             entities.Player.TurnDirection(turnDirection);
-            UI.PrintLine(" to " + entities.Player.DirectionToString(), tb);
         }
         public override string ToString()
         {
@@ -71,16 +54,11 @@ namespace MSO
 
         public List<ICommand> GetCommands() { return commands; }
 
-        public void Accept(Visitor v)
+        public void Run(EntityManager entities) 
         {
-            v.Visit(this);
-        }
-        public void Run(EntityManager entities, TextBox tb) 
-        {
-            UI.PrintLine("COMPOSITE: " + repeatAmount + " TIMES", tb);
             for (int i = 0; i < repeatAmount; i++) 
             {
-                foreach (ICommand command in commands) { command.Run(entities, tb); }
+                foreach (ICommand command in commands) { command.Run(entities); }
             }
         }
         public override string ToString()

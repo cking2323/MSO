@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace MSO
+namespace MSO.GUI
 {
     internal static class UI
     {

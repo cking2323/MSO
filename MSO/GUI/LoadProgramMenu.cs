@@ -76,9 +76,7 @@ namespace MSO.GUI
             void PickExample(string mode) // choose example program
             {
                 string path = ExampleSelector.ChoosePath(mode);
-                FileStrategy a = FileFactory.ReturnFileStrategy(path);
-                ICommand commands = a.Import();
-                target.LoadCommands(commands);
+                target.LoadCommands(path);
             }
 
             void PickFile() // open file in dialog
@@ -87,7 +85,7 @@ namespace MSO.GUI
                 {
                     programButton.HideDropDown();
 
-                    string fileName = null;
+                    string path = null;
                     OpenFileDialog openFileD = new OpenFileDialog();
                     openFileD.DefaultExt = "txt";
                     openFileD.Title = "Code file...";
@@ -99,10 +97,9 @@ namespace MSO.GUI
 
                     if (openFileD.ShowDialog() == DialogResult.OK)
                     {
-                        fileName = openFileD.FileName;
-                        FileStrategy a = FileFactory.ReturnFileStrategy(fileName);
-                        ICommand commands = a.Import();
-                        target.LoadCommands(commands);
+                        path = openFileD.FileName;
+                        FileStrategy a = FileFactory.ReturnFileStrategy(path);
+                        target.LoadCommands(path);
                     }
 
 

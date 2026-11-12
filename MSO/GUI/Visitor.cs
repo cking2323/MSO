@@ -6,17 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MSO
+namespace MSO.GUI
 {
-    internal interface Visitor
-    {
-        void Visit(MoveCommand mc);
-        void Visit(TurnCommand tc);
-
-        void Visit(CompositeCommand cc);
-    }
-
-    internal class ButtonCreationVisitor : Visitor
+    internal class ButtonCreation
     {
         private int x_pos;
         private int y_pos;
@@ -26,11 +18,11 @@ namespace MSO
         Action<Button> action;
         Point point;
 
-        public ButtonCreationVisitor(Control con, Action<Button> act, Point p, int buttonHeight, int indent)
+        public ButtonCreation(Control con, Action<Button> act, Point p, int buttonHeight, int indent)
         {
-            this.control = con;
-            this.action = act;
-            this.point = p;
+            control = con;
+            action = act;
+            point = p;
             this.buttonHeight = buttonHeight;
             this.indent = indent;
         }
@@ -46,34 +38,23 @@ namespace MSO
 
         public void CreateButtonList(List<ICommand> commands)
         {
-            foreach (ICommand command in commands)
+            foreach (var command in commands)
             {
-                command.Accept(this);
+                if (command is CompositeCommand cc)
+                {
+                    CodeBox.CreateButton(cc, point, control, action);
+                    point = PointMutation.CompositeCommand(point, buttonHeight, indent);
+                    CreateButtonList(cc.GetCommands());
+                    point = PointMutation.Revert(point, buttonHeight, indent);
+                }
+
+                else
+                {
+                    CodeBox.CreateButton(command, point, control, action);
+                    point = PointMutation.LinearCommand(point, buttonHeight);
+                }
             }
         }
-
-        public void Visit(MoveCommand mc)
-        {
-            CodeBox.CreateButton(mc, point, control, action);
-            point = PointMutation.LinearCommand(point, buttonHeight);
-        }
-        public void Visit(TurnCommand tc)
-        {
-            CodeBox.CreateButton(tc, point, control, action);
-            point = PointMutation.LinearCommand(point, buttonHeight);
-        }
-        public void Visit(CompositeCommand cc)
-        {
-
-            CodeBox.CreateButton(cc, point, control, action);
-            point = PointMutation.CompositeCommand(point, buttonHeight, indent);
-            CreateButtonList(cc.GetCommands());
-            point = PointMutation.Revert(point, buttonHeight, indent);
-
-        }
-
-
-
     }
 
     public static class PointMutation

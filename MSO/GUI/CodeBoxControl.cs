@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MSO.GUI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,7 +22,7 @@ namespace MSO
         ICommand currentCommand;
 
         List<Button> cmButtons;
-        ButtonCreationVisitor bcv;
+        ButtonCreation bcv;
 
         internal CodeBoxControl(ICommand commands)
         {
@@ -40,7 +41,7 @@ namespace MSO
         {
             ClearButtons();
             // ICommand visitor
-            this.bcv = new ButtonCreationVisitor(this, AddEventhandlers, new Point(0, 0), 30, 30);
+            this.bcv = new ButtonCreation(this, AddEventhandlers, new Point(0, 0), 30, 30);
             bcv.CreateButtons(commands);
         }
 

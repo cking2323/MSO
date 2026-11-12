@@ -13,10 +13,13 @@ namespace MSO.GUI
     {
         public TextBox textBox;
         public FlowLayoutPanel flowLayoutPanel;
+        FacadeGUI FacadeGUI;
 
 
-        public OutputControl()
+        public OutputControl(FacadeGUI facadeGUI)
         {
+            FacadeGUI = facadeGUI;
+
             textBox = new TextBox();
             flowLayoutPanel = new FlowLayoutPanel();
             flowLayoutPanel.AutoSize = true;
@@ -47,6 +50,7 @@ namespace MSO.GUI
 
             this.Controls.Add(flowLayoutPanel);
             this.Controls.Add(textBox);
+            FacadeGUI = facadeGUI;
         }
 
         public void Display(string output)
@@ -54,24 +58,11 @@ namespace MSO.GUI
             this.textBox.Text = output;
         }
 
-        public void RunEvent(ICommand command, EntityManager em)
+        public void SetText(string text)
         {
             this.textBox.Clear();
-            command.Run(em, this.textBox);
+            UI.Print(text.Replace("\n", Environment.NewLine), this.textBox);
         }
-        public void MetricsEvent(ICommand command)
-        {
-            this.textBox.Clear();
-
-            MetricsResult metrics = MetricsAnalyzer.Analyze(command);
-
-            UI.PrintLine("total commands: " + metrics.TotalCommands, this.textBox);
-            UI.PrintLine("total repeats: " + metrics.TotalRepeats, this.textBox);
-            UI.PrintLine("max nesting: " + metrics.MaxNesting, this.textBox);
-
-
-        }
-
     }
 
     public class RoundedButton : Button

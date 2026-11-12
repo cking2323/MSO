@@ -24,6 +24,8 @@ namespace MSO
         private int direction_x;
         private int direction_y;
 
+        public string path;
+
         private enum Facing { right, down, left, up }
         Facing facing = Facing.right;
 
@@ -34,16 +36,29 @@ namespace MSO
 
             direction_x = 1;
             direction_y = 0;
+
+            path = "";
+        }
+
+        public void PathClear()
+        {
+            path = "";
         }
 
         public void MoveSteps(int steps)
         {
+            path += "Player went from " + PositionToString();
+            
             pos_x += direction_x * steps;
             pos_y += direction_y * steps;
+
+            path += " to " + PositionToString() + ".\n";
         }
 
         public void TurnDirection (string direction)
         {
+            path += "Player faced from " + DirectionToString();
+
             if (direction == "left")
             {
                 int newX = -direction_y;
@@ -63,6 +78,8 @@ namespace MSO
                 direction_y = newY;
                 facing = (Facing)(((int)facing + 1) % 4);
             }
+
+            path += " to " + DirectionToString() + ".\n";
         }
 
         public string PositionToString()
@@ -73,7 +90,11 @@ namespace MSO
         public string DirectionToString() 
         {
             return facing.ToString();
-            //return "(" + direction_x.ToString() + ", " + direction_y.ToString() + ")";
+        }
+
+        public string PosDirToString()
+        {
+            return "Player ends at position: " + PositionToString() + " facing " + DirectionToString();
         }
     }
 }

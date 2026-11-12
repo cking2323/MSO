@@ -2,7 +2,6 @@
 
 namespace MSO.Tests
 {
-    [TestClass]
     public class FileStrategyTests
     {
         [Fact]

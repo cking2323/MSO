@@ -5,7 +5,6 @@ using x = Xunit;
 
 namespace MSO.Tests
 {
-    [TestClass]
     public class PlayerTests
     {
         [Fact]

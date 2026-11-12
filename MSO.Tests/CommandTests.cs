@@ -3,8 +3,6 @@ using MSO;
 
 namespace MSO.Tests
 {
-    [TestClass]
-
     public class CommandTests
     {
         [Fact]
