@@ -26,6 +26,8 @@ namespace MSO
                     cells[i, j] = CellType.Open;
                 }
             }
+
+            cells[rows - 1, cols - 1] = CellType.Goal;
         }
 
         public void LoadGrid(GridLoadStrategy strategy)
