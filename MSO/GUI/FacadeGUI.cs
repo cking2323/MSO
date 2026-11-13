@@ -17,6 +17,7 @@ namespace MSO.GUI
         {
             if (StartCommand != null)
             {
+                entity.Player.ResetPosition();
                 entity.Player.ClearPath();
                 StartCommand.Run(entity);
 
