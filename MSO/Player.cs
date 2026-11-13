@@ -79,7 +79,7 @@ namespace MSO
             path += " to " + PositionToString() + ".\n";
         }
 
-        bool CheckMoveStep(Grid grid)
+        public bool CheckMoveStep(Grid grid)
         {
             int nextX = pos_x + direction_x;
             int nextY = pos_y + direction_y;

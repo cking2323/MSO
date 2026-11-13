@@ -66,5 +66,29 @@ namespace MSO.Tests
             player.MoveSteps(5, grid);
             Assert.Equal("(0, 5)", player.PositionToString());
         }
+
+        [Fact]
+        public void CheckMoveStepValidMove()
+        {
+            var player = new Player(); 
+            var grid = new Grid(10, 10);
+
+            bool result = player.CheckMoveStep(grid);
+
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void CheckMoveStepOutOfBounds()
+        {
+            var player = new Player(); 
+            var grid = new Grid(10, 10);
+
+            player.TurnDirection("right");
+            player.TurnDirection("right"); // Now facing "left" (-X direction)
+
+            var exception = Assert.Throws<Exception>(() => player.CheckMoveStep(grid));
+            Assert.Equal("Move illegal: Out of bounds", exception.Message);
+        }
     }
 }
