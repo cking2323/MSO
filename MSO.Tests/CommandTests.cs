@@ -40,6 +40,20 @@ namespace MSO.Tests
         }
 
         [Fact]
+        public void RepeatCommandTest()
+        {
+            var entities = new EntityManager();
+            var composite = new CompositeCommand(3);
+            var repeat = new RepeatCommand("GridEdge");
+            repeat.AddCommand(new MoveCommand(1));
+            composite.AddCommand(repeat);
+
+            composite.Run(entities);
+
+            Assert.Equal("(" + (entities.size - 1).ToString() + ", 0)", entities.Player.PositionToString());
+        }
+
+        [Fact]
         public void CompositeCommandNestedTest()
         {
             var entities = new EntityManager();

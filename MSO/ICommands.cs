@@ -18,11 +18,7 @@ namespace MSO
 
         public void Run(EntityManager entities) 
         { 
-            entities.Player.MoveSteps(steps);
-        }
-        public override string ToString()
-        {
-            return "Move " + steps.ToString();
+            entities.Player.MoveSteps(steps, entities.Grid);
         }
     }
     internal class TurnCommand : ICommand
@@ -36,34 +32,67 @@ namespace MSO
         {
             entities.Player.TurnDirection(turnDirection);
         }
-        public override string ToString()
-        {
-            return "Turn " + turnDirection;
-        }
     }
 
-    internal class CompositeCommand : ICommand 
+    internal abstract class NestedCommand : ICommand
     {
-        private List<ICommand> commands;
+        protected List<ICommand> commands;
 
+        public abstract void Run(EntityManager entities);
+
+        public void AddCommand(ICommand Icommand) { commands.Add(Icommand); }
+
+        public List<ICommand> GetCommands() { return commands; }
+    }
+
+    internal class CompositeCommand : NestedCommand 
+    {
         public int repeatAmount;
 
         public CompositeCommand(int repeat_amount) { commands = new List<ICommand>(); this.repeatAmount = repeat_amount; }
 
-        public void AddCommand(ICommand Icommand) { commands.Add(Icommand); }
-
-        public List<ICommand>   GetCommands() { return commands; }
-
-        public void Run(EntityManager entities) 
+        public override void Run(EntityManager entities) 
         {
             for (int i = 0; i < repeatAmount; i++) 
             {
                 foreach (ICommand command in commands) { command.Run(entities); }
             }
         }
-        public override string ToString()
+    }
+
+
+    internal class RepeatCommand : NestedCommand
+    {
+
+        public string repeatType;
+
+        public RepeatCommand(string repeatType) 
+        { 
+            commands = new List<ICommand>();
+            this.repeatType = repeatType; 
+        }
+
+        public override void Run(EntityManager entities)
         {
-            return "Repeat " + repeatAmount.ToString();
+            for (int i = 0; i < 10000; i++)
+            {
+                if (i == 9999)
+                    throw new Exception("9999 iterations reached. Infinite loop likely detected");
+
+                if (repeatType == "WallAhead" && entities.Player.wallAhead)
+                {
+                    entities.Player.wallAhead = false;
+                    break;
+                }
+
+                if (repeatType == "GridEdge" && entities.Player.gridBorderAhead)
+                {
+                    entities.Player.gridBorderAhead = false;
+                    break;
+                }
+
+                foreach (ICommand command in commands) { command.Run(entities); }
+            }
         }
     }
 }

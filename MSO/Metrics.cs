@@ -24,7 +24,7 @@ namespace MSO
 
             void Traverse(ICommand cmd, int currentDepth)
             {
-                if (cmd is CompositeCommand composite)
+                if (cmd is NestedCommand nestCommand)
                 {
                     if (currentDepth > maxNesting)
                     {
@@ -38,7 +38,7 @@ namespace MSO
                     }
 
                     // Traverse children
-                    foreach (var subCommand in composite.GetCommands())
+                    foreach (var subCommand in nestCommand.GetCommands())
                     {
                         Traverse(subCommand, currentDepth + 1);
                     }

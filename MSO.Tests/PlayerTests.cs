@@ -18,7 +18,8 @@ namespace MSO.Tests
         public void PlayerMove()
         {
             Player player = new Player();
-            player.MoveSteps(5);
+            Grid grid = new Grid(10, 10);
+            player.MoveSteps(5, grid);
             Assert.Equal("(5, 0)", player.PositionToString());
         }
         [Fact]
@@ -60,9 +61,10 @@ namespace MSO.Tests
         public void PlayerMoveAndTurn()
         {
             Player player = new Player();
-            player.TurnDirection("right");
-            player.MoveSteps(5);
-            Assert.Equal("(0, -5)", player.PositionToString());
+            Grid grid = new Grid(10, 10);
+            player.TurnDirection("left");
+            player.MoveSteps(5, grid);
+            Assert.Equal("(0, 5)", player.PositionToString());
         }
     }
 }

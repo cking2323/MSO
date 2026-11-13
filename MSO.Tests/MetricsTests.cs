@@ -5,7 +5,7 @@ namespace MSO.Tests
     public class MetricsAnalyzerTests
     {
         [Fact]
-        public void FlatTreeTest()
+        public void FlatTreeTestComposite()
         {
             var root = new CompositeCommand(1);
             root.AddCommand(new MoveCommand(5));
@@ -36,12 +36,29 @@ namespace MSO.Tests
         }
 
         [Fact]
+        public void NestedRepeatTest()
+        {
+            var root = new CompositeCommand(1);
+
+            var repeatCommand = new RepeatCommand("WallAhead");
+            repeatCommand.AddCommand(new MoveCommand(2));
+
+            root.AddCommand(repeatCommand);
+
+            var metrics = MetricsAnalyzer.Analyze(root);
+
+            Assert.Equal(2, metrics.TotalCommands);
+            Assert.Equal(1, metrics.TotalRepeats);
+            Assert.Equal(1, metrics.MaxNesting);
+        }
+
+        [Fact]
         public void DeeplyNestedCommandsTest()
         {
             var root = new CompositeCommand(1);
 
             var level1 = new CompositeCommand(2);
-            var level2 = new CompositeCommand(2);
+            var level2 = new RepeatCommand("WallAhead");
             level2.AddCommand(new MoveCommand(1));
 
             level1.AddCommand(level2);

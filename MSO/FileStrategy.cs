@@ -15,9 +15,9 @@ class TextFileStrategy : FileStrategy
     public TextFileStrategy(string _path) : base(_path) { }
     public override ICommand Import()
     {
-        List<CompositeCommand> nestedComposites = new List<CompositeCommand>();
+        List<NestedCommand> nestedCommands = new List<NestedCommand>();
 
-        nestedComposites.Add(this.command);
+        nestedCommands.Add(this.command);
 
         int currentNesting = 0;
 
@@ -27,28 +27,35 @@ class TextFileStrategy : FileStrategy
 
             currentNesting = line.Length - line.TrimStart('\t').Length;
 
-            while (nestedComposites.Count > currentNesting + 1)
+            while (nestedCommands.Count > currentNesting + 1)
             {
-                nestedComposites.RemoveAt(nestedComposites.Count - 1);
+                nestedCommands.RemoveAt(nestedCommands.Count - 1);
             }
 
             string[] args = line.TrimStart('\t').Split(" ");
 
             if (args[0] == "Move")
             {
-                nestedComposites[currentNesting].AddCommand(new MoveCommand(int.Parse(args[1])));
+                nestedCommands[currentNesting].AddCommand(new MoveCommand(int.Parse(args[1])));
             }
 
             if (args[0] == "Turn")
             {
-                nestedComposites[currentNesting].AddCommand(new TurnCommand(args[1]));
+                nestedCommands[currentNesting].AddCommand(new TurnCommand(args[1]));
             }
 
             if (args[0] == "Repeat")
             {
                 CompositeCommand repeat = new CompositeCommand(int.Parse(args[1]));
-                nestedComposites.Add(repeat);
-                nestedComposites[currentNesting].AddCommand(repeat);
+                nestedCommands.Add(repeat);
+                nestedCommands[currentNesting].AddCommand(repeat);
+            }
+
+            if (args[0] == "RepeatUntil")
+            {
+                RepeatCommand repeat = new RepeatCommand(args[1]);
+                nestedCommands.Add(repeat);
+                nestedCommands[currentNesting].AddCommand(repeat);
             }
         }
 

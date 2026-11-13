@@ -59,6 +59,9 @@ namespace MSO.GUI
             Button metricsButton = outputControl.flowLayoutPanel.Controls["met"] as Button;
             runButton.Click += RunProgram;
             metricsButton.Click += MetricsProgram;
+
+            int[] PlayerPos = FacadeGUI.GetPlayerPos();
+            gridControl.LoadGrid(FacadeGUI.GetGrid(), PlayerPos[0], PlayerPos[1]);
         }
 
         // Run the program or run Metrics
@@ -73,6 +76,9 @@ namespace MSO.GUI
             FacadeGUI.LoadCommandFromPath(path);
             string result = FacadeGUI.RunCommands();
             outputControl.SetText(result);
+
+            int[] PlayerPos = FacadeGUI.GetPlayerPos();
+            gridControl.LoadGrid(FacadeGUI.GetGrid(), PlayerPos[0], PlayerPos[1]);
         }
 
         private void MetricsProgram(object sender, EventArgs ea)
@@ -86,7 +92,8 @@ namespace MSO.GUI
         {
             string path = PathFileWindow();
             FacadeGUI.LoadGridFromPath(path);
-            gridControl.LoadGrid(FacadeGUI.GetGrid());
+            int[] PlayerPos = FacadeGUI.GetPlayerPos();
+            gridControl.LoadGrid(FacadeGUI.GetGrid(), PlayerPos[0], PlayerPos[1]);
         }
         public void LoadCommands(string path)
         {

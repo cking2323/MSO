@@ -47,11 +47,17 @@ namespace MSO.GUI
         public void LoadGridFromPath(string path)
         {
             GridTextFileStrategy strat = new GridTextFileStrategy(path);
+            entity.Player.ResetPosition();
             entity.Grid.LoadGrid(strat);
         }
         public CellType[,] GetGrid()
         {
             return entity.Grid.cells;
+        }
+
+        public int[] GetPlayerPos()
+        {
+            return entity.Player.GetPosition();
         }
     }
 }

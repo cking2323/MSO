@@ -35,7 +35,13 @@ namespace MSO
 
         public CellType GetCell(int x, int y) 
         {
-            return cells[x, y];
+            return cells[cells.GetLength(0) - 1 - y, x]; //convert matrix axis so [0,0] is leftBottom
+        }
+
+        public bool CheckInBounds(int x, int y)
+        {
+            return x >= 0 && x < cells.GetLength(0) &&
+                   y >= 0 && y < cells.GetLength(1);
         }
     }
 }

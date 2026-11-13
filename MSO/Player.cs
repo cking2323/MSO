@@ -8,11 +8,12 @@ namespace MSO
 {
     internal class EntityManager
     {
+        public int size = 7;
         public Player Player { get; private set; }
         public Grid Grid { get; private set; }
         public EntityManager() 
         {
-            Grid = new Grid(3, 3); //default size
+            Grid = new Grid(size, size); //default size
             Player = new Player();
         }
     }
@@ -20,6 +21,9 @@ namespace MSO
     {
         private int pos_x;
         private int pos_y;
+
+        public bool wallAhead;
+        public bool gridBorderAhead;
 
         private int direction_x;
         private int direction_y;
@@ -45,14 +49,50 @@ namespace MSO
             path = "";
         }
 
-        public void MoveSteps(int steps)
+        public void ResetPosition()
+        {
+            pos_x = 0;
+            pos_y = 0;
+        }
+
+        public void MoveSteps(int steps, Grid Grid)
         {
             path += "Player went from " + PositionToString();
-            
-            pos_x += direction_x * steps;
-            pos_y += direction_y * steps;
+
+            for (int i = 0; i < steps; i++)
+            {
+                if (CheckMoveStep(Grid))
+                {
+                    pos_x += direction_x;
+                    pos_y += direction_y;
+                }
+                else
+                {
+                    break;
+                }
+            }
 
             path += " to " + PositionToString() + ".\n";
+        }
+
+        bool CheckMoveStep(Grid grid)
+        {
+            int nextX = pos_x + direction_x;
+            int nextY = pos_y + direction_y;
+
+            if (!grid.CheckInBounds(nextX, nextY))
+            {
+                gridBorderAhead = true;
+                return false;
+            }
+                
+            if (! (grid.GetCell(nextX, nextY) != CellType.Closed) )
+            {
+                wallAhead = true;
+                return false;
+            }
+
+            return true;
         }
 
         public void TurnDirection (string direction)
@@ -83,6 +123,11 @@ namespace MSO
         }
 
         public void ClearPath() { path = ""; }
+
+        public int[] GetPosition()
+        {
+            return [this.pos_x, this.pos_y];
+        }
 
         public string PositionToString()
         {
