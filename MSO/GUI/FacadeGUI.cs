@@ -19,7 +19,15 @@ namespace MSO.GUI
             {
                 entity.Player.ClearPath();
                 StartCommand.Run(entity);
-                return entity.Player.path + "\n" + entity.Player.PosDirToString();
+
+                string success = "Failed";
+
+                if (entity.Grid.CheckIsGoal(entity.Player.GetPosition()))
+                    success = "Succeeded";
+
+                return entity.Player.path + "\n" 
+                    + entity.Player.PosDirToString()
+                    + "\n\n" + success + " to reach the goal!";
             }
 
             return "";

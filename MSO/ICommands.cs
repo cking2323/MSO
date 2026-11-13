@@ -74,9 +74,11 @@ namespace MSO
 
         public override void Run(EntityManager entities)
         {
-            for (int i = 0; i < 10000; i++)
+            entities.Player.repeatMode = true;
+
+            for (int i = 0; i < 1000; i++)
             {
-                if (i == 9999)
+                if (i == 999)
                     throw new Exception("9999 iterations reached. Infinite loop likely detected");
 
                 if (repeatType == "WallAhead" && entities.Player.wallAhead)
@@ -93,6 +95,8 @@ namespace MSO
 
                 foreach (ICommand command in commands) { command.Run(entities); }
             }
+
+            entities.Player.repeatMode = false;
         }
     }
 }

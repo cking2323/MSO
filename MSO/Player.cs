@@ -28,6 +28,8 @@ namespace MSO
         private int direction_x;
         private int direction_y;
 
+        public bool repeatMode;
+
         public string path;
 
         private enum Facing { right, down, left, up }
@@ -42,6 +44,8 @@ namespace MSO
             direction_y = 0;
 
             path = "";
+
+            repeatMode = false;
         }
 
         public void PathClear()
@@ -82,12 +86,18 @@ namespace MSO
 
             if (!grid.CheckInBounds(nextX, nextY))
             {
+                if (repeatMode == false)
+                    throw new Exception("Move illegal: Out of bounds");
+
                 gridBorderAhead = true;
                 return false;
             }
                 
             if (! (grid.GetCell(nextX, nextY) != CellType.Closed) )
             {
+                if (repeatMode == false)
+                    throw new Exception("Move illegal: blocked cell");
+
                 wallAhead = true;
                 return false;
             }

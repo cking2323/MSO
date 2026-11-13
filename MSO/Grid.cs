@@ -38,6 +38,12 @@ namespace MSO
             return cells[cells.GetLength(0) - 1 - y, x]; //convert matrix axis so [0,0] is leftBottom
         }
 
+        public bool CheckIsGoal(int[] pos)
+        {
+            return cells[cells.GetLength(0) - 1 - pos[1], pos[0]] == CellType.Goal;
+
+        }
+
         public bool CheckInBounds(int x, int y)
         {
             return x >= 0 && x < cells.GetLength(0) &&
