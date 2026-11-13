@@ -101,19 +101,10 @@ namespace MSO.GUI
                         FileStrategy a = FileFactory.ReturnFileStrategy(path);
                         target.LoadCommands(path);
                     }
-
-
                 }
                 catch (Exception ex)
                 { MessageBox.Show($"Something went wrong\n{ex.Message}.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); }
-
             }
         }
-
-
     }
-
-
-
-
 }

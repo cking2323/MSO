@@ -63,7 +63,7 @@ class FileFactory
         if (Path.GetExtension(path) == ".txt")
             return new TextFileStrategy(path);
 
-        throw new Exception("FileFactory: Path fout");
+        throw new Exception("FileFactory: Path fout: " + path);
     }
 }
 

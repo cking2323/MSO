@@ -12,7 +12,7 @@ namespace MSO
         public Grid Grid { get; private set; }
         public EntityManager() 
         {
-            Grid = new Grid(5, 5);
+            Grid = new Grid(3, 3); //default size
             Player = new Player();
         }
     }
@@ -81,6 +81,8 @@ namespace MSO
 
             path += " to " + DirectionToString() + ".\n";
         }
+
+        public void ClearPath() { path = ""; }
 
         public string PositionToString()
         {

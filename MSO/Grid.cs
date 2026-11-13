@@ -14,12 +14,19 @@ namespace MSO
     }
     internal class Grid
     {
-        private CellType[,] cells; 
+        public CellType[,] cells; 
         public Grid(int rows, int cols) 
         {
             cells = new CellType[rows, cols];
-        }
 
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    cells[i, j] = CellType.Open;
+                }
+            }
+        }
 
         public void LoadGrid(GridLoadStrategy strategy)
         {

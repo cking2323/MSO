@@ -12,99 +12,87 @@ namespace MSO
     {
         public GridDisplay gritDisplay;
 
-        public GridControl(char[][] route)
+        public GridControl()
         {
             this.Size = new Size(300, 300);
-            this.gritDisplay = new GridDisplay(Size.Width, route);
+            this.gritDisplay = new GridDisplay();
             this.BorderStyle = BorderStyle.Fixed3D;
             this.BackgroundImage = gritDisplay.bitMap;
-
         }
 
+        public void LoadGrid(CellType[,] grid)
+        {
+            this.BackgroundImage = gritDisplay.CreateGraphics(300, grid);
+            this.BackgroundImageLayout = ImageLayout.Stretch;
+            this.Invalidate();
+        }
     }
-    
+
     // Creates an image with the player grid and coloured squares
     public class GridDisplay
     {
         public Bitmap bitMap;
 
-        public GridDisplay(int size, char[][] route)
-        {
-            //this.bitMap = new Bitmap(300,300);
-            this.bitMap = CreateGraphics(size, route);
-        }
-        public Bitmap CreateGraphics(int size, char[][] route) //creates the rendered bitmap    
+        public Bitmap CreateGraphics(int size, CellType[,] grid)
         {
             Bitmap bm = new Bitmap(size, size);
             Graphics g = Graphics.FromImage(bm);
-            GenerateSquares(route, g, bm.Width);
-            GenerateGrid(5, g, bm.Width);
+            GenerateSquares(grid, g, bm.Width);
+            GenerateGrid(grid.GetLength(0), grid.GetLength(1), g, bm.Width);
             return bm;
         }
 
-        // colours the squares based on the provided pathfinding exercises
-        private void GenerateSquares(char[][] route, Graphics gr, int bitmapSize)
+        private void GenerateSquares(CellType[,] grid, Graphics gr, int bitmapSize)
         {
             SolidBrush brush = new SolidBrush(Color.IndianRed);
             SolidBrush brush1 = new SolidBrush(Color.Green);
             SolidBrush brush2 = new SolidBrush(Color.White);
-            int boxSize = bitmapSize / route.Length;
-            for (int i = 0; i < route.Length; i++)
+
+            int rows = grid.GetLength(0);
+            int cols = grid.GetLength(1);
+
+            int boxWidth = bitmapSize / cols;
+            int boxHeight = bitmapSize / rows;
+
+            for (int i = 0; i < rows; i++)
             {
-                char[] ch = route[i];
-                for (int j = 0; j < ch.Length; j++)
+                for (int j = 0; j < cols; j++)
                 {
-                    char c = ch[j];
+                    CellType c = grid[i, j];
 
-                    if (c == '+')
+                    if (c == CellType.Closed)
                     {
-                        gr.FillRectangle(brush, j * boxSize, i * boxSize, (j + 1) * boxSize, (i + 1) * boxSize);
+                        gr.FillRectangle(brush, j * boxWidth, i * boxHeight, boxWidth, boxHeight);
                     }
-                    else if (c == 'o')
+                    else if (c == CellType.Open)
                     {
-                        gr.FillRectangle(brush2, j * boxSize, i * boxSize, (j + 1) * boxSize, (i + 1) * boxSize);
+                        gr.FillRectangle(brush2, j * boxWidth, i * boxHeight, boxWidth, boxHeight);
                     }
-                    else if (c == 'x')
+                    else if (c == CellType.Goal)
                     {
-                        gr.FillRectangle(brush1, j * boxSize, i * boxSize, (j + 1) * boxSize, (i + 1) * boxSize);
+                        gr.FillRectangle(brush1, j * boxWidth, i * boxHeight, boxWidth, boxHeight);
                     }
-
                 }
             }
-
         }
 
         // Generates grid with black lines
-        private void GenerateGrid(int dimension, Graphics gr, int bitmapSize)
+        private void GenerateGrid(int rows, int cols, Graphics gr, int bitmapSize)
         {
             Pen pen = new Pen(Color.Black, 2);
-            int step = bitmapSize / dimension;
 
-            for (int i = 0; i < dimension + 1; i++) // horizontal lines
+            int boxWidth = bitmapSize / cols;
+            int boxHeight = bitmapSize / rows;
+
+            for (int i = 0; i < rows + 1; i++)
             {
-                if (i == dimension)
-                {
-                    gr.DrawLine(pen, 0, i * step - 4, bitmapSize, i * step - 4);
-                }
-                else
-                {
-                    gr.DrawLine(pen, 0, i * step, bitmapSize, i * step);
-                }
+                gr.DrawLine(pen, 0, i * boxHeight, bitmapSize, i * boxHeight);
             }
-            for (int i = 0; i < dimension + 1; i++) // vertical lines
+
+            for (int i = 0; i < cols + 1; i++)
             {
-                if (i == dimension)
-                {
-                    gr.DrawLine(pen, bitmapSize - 4, 0, bitmapSize - 4, bitmapSize);
-                }
-                else
-                {
-                    gr.DrawLine(pen, i * step, 0, i * step, bitmapSize);
-                }
+                gr.DrawLine(pen, i * boxWidth, 0, i * boxWidth, bitmapSize);
             }
         }
     }
-
 }
-
-

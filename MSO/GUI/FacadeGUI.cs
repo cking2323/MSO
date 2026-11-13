@@ -3,17 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace MSO.GUI
 {
     internal class FacadeGUI
     {
         public ICommand StartCommand;
+
+        EntityManager entity = new EntityManager();
+        MetricsAnalyzer metrics = new MetricsAnalyzer();
         public string RunCommands() 
         {
             if (StartCommand != null)
             {
-                EntityManager entity = new EntityManager();
+                entity.Player.ClearPath();
                 StartCommand.Run(entity);
                 return entity.Player.path + "\n" + entity.Player.PosDirToString();
             }
@@ -32,12 +36,22 @@ namespace MSO.GUI
 
             return "";
         }
-        public void LoadCommandFromPath(string path)
+        public string LoadCommandFromPath(string path)
         {
             FileStrategy a = FileFactory.ReturnFileStrategy(path);
             StartCommand = a.Import();
+
+            return File.ReadAllText(path);
         }
 
-
+        public void LoadGridFromPath(string path)
+        {
+            GridTextFileStrategy strat = new GridTextFileStrategy(path);
+            entity.Grid.LoadGrid(strat);
+        }
+        public CellType[,] GetGrid()
+        {
+            return entity.Grid.cells;
+        }
     }
 }

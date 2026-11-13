@@ -52,7 +52,7 @@ namespace MSO
 
         public void AddCommand(ICommand Icommand) { commands.Add(Icommand); }
 
-        public List<ICommand> GetCommands() { return commands; }
+        public List<ICommand>   GetCommands() { return commands; }
 
         public void Run(EntityManager entities) 
         {
