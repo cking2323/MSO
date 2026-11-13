@@ -57,8 +57,10 @@ namespace MSO
         {
             pos_x = 0;
             pos_y = 0;
-        }
 
+            direction_x = 1;
+            direction_y = 0;
+        }
         public void MoveSteps(int steps, Grid Grid)
         {
             path += "Player went from " + PositionToString();

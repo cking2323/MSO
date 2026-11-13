@@ -93,7 +93,7 @@ namespace MSO
                     break;
                 }
 
-                foreach (ICommand command in commands) { command.Run(entities); }
+                commands[i % commands.Count].Run(entities);
             }
 
             entities.Player.repeatMode = false;
