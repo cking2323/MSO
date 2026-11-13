@@ -1,5 +1,5 @@
-oooo+
-ooooo
-ooooo
-ooooo
-oooox
++++ox
+++oo+
++oo++
++o+++
+oo+++
